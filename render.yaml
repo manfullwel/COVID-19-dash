@@ -1,9 +1,10 @@
 services:
   - type: web
-    name: covid19-dashboard
+    name: covid19-dashboard-brazil
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn dashboard:server -c gunicorn_config.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
+    autoDeploy: true
