@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COVID-19 Dashboard Brasil</title>
+    <meta http-equiv="refresh" content="0; url=https://covid19-dashboard-brazil.onrender.com">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            flex-direction: column;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>COVID-19 Dashboard Brasil</h1>
+        <p>Redirecionando para o dashboard...</p>
+        <div class="loader"></div>
+        <p>Se o redirecionamento não funcionar, <a href="https://covid19-dashboard-brazil.onrender.com">clique aqui</a>.</p>
+    </div>
+</body>
+</html>
