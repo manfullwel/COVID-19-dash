@@ -32,7 +32,7 @@ Um dashboard interativo para monitoramento de casos de COVID-19 no Brasil, desen
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/covid-dashboard.git
+git clone https://github.com/igorsoarespy/covid19.git
 ```
 
 2. Instale as dependências:
