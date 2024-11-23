@@ -14,9 +14,24 @@ import os
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 server = app.server  # Expondo o servidor para o Gunicorn
 
-# Importando o layout e callbacks do dashboard original
-from dashboard import *
+# Layout do dashboard
+app.layout = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            html.H1("Dashboard COVID-19 Brasil", className="text-center mb-4"),
+            html.Div([
+                dbc.Card([
+                    dbc.CardBody([
+                        html.H4("Carregando dados...", id="status"),
+                        html.P("Por favor, aguarde alguns instantes...")
+                    ])
+                ])
+            ])
+        ])
+    ])
+], fluid=True)
 
+# Ponto de entrada principal
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run_server(host="0.0.0.0", port=port, debug=False)
