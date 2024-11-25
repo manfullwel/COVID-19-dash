@@ -1,3 +1,4 @@
+import os
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, ClientsideFunction
@@ -25,7 +26,7 @@ CENTER_LAT, CENTER_LON = -14.272572694355336, -51.25567404158474
 df_states = pd.read_csv("df_states.csv")
 df_brasil = pd.read_csv("df_brasil.csv")
 
-token = open(".mapbox_token").read()
+token = os.getenv("MAPBOX_TOKEN", "")  # Valor default vazio caso não encontre
 brazil_states = json.load(open("geojson/brazil_geo.json", "r"))
 
 brazil_states["features"][0].keys()
@@ -530,4 +531,6 @@ def update_mortality_chart(date):
     return fig
 
 if __name__ == "__main__":
-    app.run_server(debug=False, port=8051)
+    # Pega a porta do ambiente ou usa 10000 como padrão
+    port = int(os.getenv("PORT", 10000))
+    app.run_server(debug=False, host="0.0.0.0", port=port)
