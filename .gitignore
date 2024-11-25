@@ -1,0 +1,27 @@
+# Arquivos de ambiente e configuração
+.env
+.env.*
+!.env.example
+.mapbox_token
+config.py
+
+# Arquivos de cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Arquivos de dados grandes
+*.csv
+data/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de IDE
+.vscode/
+.idea/
+
+# Arquivos de log
+*.log

@@ -1,94 +1,82 @@
 # Dashboard COVID-19 Brasil
 
-Um dashboard interativo para monitoramento de casos de COVID-19 no Brasil, desenvolvido com Dash e Plotly.
+Dashboard interativo para visualização de dados da COVID-19 no Brasil, construído com Dash e Plotly.
 
-## Funcionalidades
+## 🚀 Features
 
-- **Visualização de Dados em Tempo Real**
-  - Mapa coroplético do Brasil
-  - Gráfico de evolução temporal
-  - Comparativo de casos por estado
-  - Taxa de letalidade por estado
+- Visualização de casos e óbitos por estado
+- Mapa interativo com dados por região
+- Gráficos temporais de evolução da pandemia
+- Interface responsiva e moderna
+- Tema dark para melhor visualização
 
-- **Filtros Interativos**
-  - Seleção de data
-  - Tipo de dados (casos, óbitos)
-  - Visualização por estado ou país
+## 🛠️ Tecnologias
 
-- **Interface Responsiva**
-  - Design adaptativo para diferentes dispositivos
-  - Sidebar interativa
-  - Cards informativos animados
-
-## Tecnologias
-
-- Python 3.8+
+- Python 3.9
 - Dash
 - Plotly
 - Pandas
-- NumPy
+- Docker
+- Gunicorn
 
-## Instalação
+## 📋 Pré-requisitos
+
+- Python 3.9+
+- Docker Desktop
+- Token do Mapbox (para os mapas)
+
+## 🔧 Instalação Local
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/igorsoarespy/covid19.git
+git clone [URL_DO_SEU_REPOSITORIO]
+cd [NOME_DO_REPOSITORIO]
 ```
 
-2. Instale as dependências:
+2. Crie um arquivo `.env` baseado no `.env.example`:
 ```bash
-pip install -r requirements.txt
+cp .env.example .env
 ```
 
-3. Execute o dashboard:
+3. Configure seu token do Mapbox no arquivo `.env`
+
+4. Execute com Docker:
 ```bash
-python dashboard.py
+docker compose up --build
 ```
 
-## Estrutura do Projeto
+5. Acesse em: `http://localhost:10000`
+
+## 🌐 Deploy no Render
+
+1. Crie uma conta no [Render](https://render.com)
+2. Conecte seu repositório GitHub
+3. Crie um novo Web Service
+4. Configure as variáveis de ambiente:
+   - `PORT`: 10000
+   - `MAPBOX_TOKEN`: seu_token_do_mapbox
+   - `PYTHONUNBUFFERED`: 1
+
+## 📦 Estrutura do Projeto
 
 ```
-covid-dashboard/
-├── assets/
-│   └── style.css        # Estilos do dashboard
-├── data/
-│   └── HIST_PAINEL_COVIDBR.csv  # Dados COVID
-├── dashboard.py         # Aplicação principal
-├── requirements.txt     # Dependências
-└── README.md           # Documentação
+├── app.py              # Aplicação Dash
+├── dashboard.py        # Lógica principal do dashboard
+├── wsgi.py            # Ponto de entrada para Gunicorn
+├── Dockerfile         # Configuração do container
+├── docker-compose.yml # Orquestração do container
+├── requirements.txt   # Dependências Python
+└── .env.example      # Template de variáveis de ambiente
 ```
 
-## Pipeline de Atualização
+## 🤝 Contribuindo
 
-1. **Coleta de Dados**
-   - Download automático dos dados do Ministério da Saúde
-   - Validação e limpeza dos dados
+1. Fork o projeto
+2. Crie sua branch de feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-2. **Processamento**
-   - Agregação por estado/região
-   - Cálculo de métricas (taxa de letalidade, etc.)
-   - Formatação para visualização
+## 📄 Licença
 
-3. **Visualização**
-   - Atualização dos gráficos
-   - Recálculo de estatísticas
-   - Cache de dados processados
-
-## Contato
-
-- **Desenvolvedor**: Igor Soares
-- **Email**: igorofyeshua@gmail.com
-- **Telegram**: @igordostrd
-
-## Atualizações Recentes
-
-### v2.0.0
-- Novo design responsivo
-- Adição de novos gráficos comparativos
-- Melhorias na performance
-- Interface mais moderna e profissional
-
-### v1.0.0
-- Lançamento inicial
-- Funcionalidades básicas de visualização
-- Mapa do Brasil interativo
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
