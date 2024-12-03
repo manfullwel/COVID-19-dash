@@ -123,17 +123,14 @@ CONTACT_LINK_STYLE = {
 }
 
 # =====================================================================
-# Configurações de Estilo Global
+# Configuração inicial do app
 app = dash.Dash(__name__, 
-    external_stylesheets=[
-        dbc.themes.CYBORG,
-        'https://use.fontawesome.com/releases/v5.15.4/css/all.css'
-    ],
-    suppress_callback_exceptions=True,
-    title='COVID-19 Dashboard'
-)
+                external_stylesheets=[
+                    dbc.themes.CYBORG,
+                    'https://use.fontawesome.com/releases/v5.15.4/css/all.css'
+                ])
 
-# Adiciona rota de healthcheck
+# Rota de healthcheck simples
 @app.server.route('/health')
 def health_check():
     return 'OK', 200
@@ -556,5 +553,5 @@ def update_mortality_chart(date):
     return fig
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "8080"))
+    port = int(os.getenv("PORT", 8080))
     app.run_server(debug=False, host="0.0.0.0", port=port)
