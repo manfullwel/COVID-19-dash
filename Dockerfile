@@ -17,6 +17,10 @@ COPY . .
 
 # Configurar variáveis de ambiente
 ENV PYTHONUNBUFFERED=1
+ENV DASH_DEBUG_MODE=false
+
+# Expor a porta (apenas documentação)
+EXPOSE 8080
 
 # Comando para iniciar a aplicação
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 120 wsgi:server
+CMD gunicorn -c gunicorn_config.py wsgi:server
