@@ -30,6 +30,12 @@ CENTER_LAT, CENTER_LON = -14.272572694355336, -51.25567404158474
 df_states = pd.read_csv("df_states.csv")
 df_brasil = pd.read_csv("df_brasil.csv")
 
+df_states['data'] = pd.to_datetime(df_states['data'])
+df_brasil['data'] = pd.to_datetime(df_brasil['data'])
+
+min_date = df_states['data'].min()
+max_date = df_states['data'].max()
+
 token = os.getenv("MAPBOX_TOKEN", "")  # Valor default vazio caso não encontre
 brazil_states = json.load(open("geojson/brazil_geo.json", "r"))
 
@@ -223,13 +229,13 @@ app.layout = dbc.Container([
                                  'letterSpacing': '1.5px',
                                  'marginBottom': '10px'
                              }),
-                    dcc.DatePickerSingle(
+                    dcc.DatePickerRange(
                         id="date-picker",
-                        min_date_allowed=df_states["data"].min(),
-                        max_date_allowed=df_states["data"].max(),
-                        date=df_states["data"].max(),
-                        style={"width": "100%"},
-                        className="mb-4"
+                        min_date_allowed=min_date,
+                        max_date_allowed=max_date,
+                        start_date=max_date - pd.Timedelta(days=30),
+                        end_date=max_date,
+                        display_format='DD/MM/YYYY'
                     ),
 
                     html.Label("TIPO DE DADOS", 
@@ -401,7 +407,7 @@ app.layout = dbc.Container([
     [
         Output("casos-recuperados-text", "children"),
         Output("obitos-text", "children"),
-    ], [Input("date-picker", "date"), Input("location-button", "value")]
+    ], [Input("date-picker", "end_date"), Input("location-button", "value")]
 )
 def display_status(date, location):
     try:
@@ -458,7 +464,7 @@ def plot_line_graph(plot_type, location):
 
 @app.callback(
     Output("choropleth-map", "figure"), 
-    [Input("date-picker", "date")]
+    [Input("date-picker", "end_date")]
 )
 def update_map(date):
     df_data_on_states = df_states[df_states["data"] == date]
@@ -490,7 +496,7 @@ def update_location(click_data, n_clicks):
 
 @app.callback(
     Output("bar-chart", "figure"),
-    [Input("date-picker", "date")]
+    [Input("date-picker", "end_date")]
 )
 def update_bar_chart(date):
     df_date = df_states[df_states["data"] == date].sort_values("casosAcumulado", ascending=True)
@@ -517,7 +523,7 @@ def update_bar_chart(date):
 
 @app.callback(
     Output("mortality-chart", "figure"),
-    [Input("date-picker", "date")]
+    [Input("date-picker", "end_date")]
 )
 def update_mortality_chart(date):
     df_date = df_states[df_states["data"] == date]
