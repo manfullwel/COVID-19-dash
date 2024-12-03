@@ -547,6 +547,5 @@ def update_mortality_chart(date):
     return fig
 
 if __name__ == "__main__":
-    # Pega a porta do ambiente ou usa 10000 como padrão
-    port = int(os.getenv("PORT", 10000))
+    port = int(os.getenv("PORT", "8080"))
     app.run_server(debug=False, host="0.0.0.0", port=port)

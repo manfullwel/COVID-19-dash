@@ -16,8 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Configurar variáveis de ambiente
-ENV PORT=10000
 ENV PYTHONUNBUFFERED=1
 
 # Comando para iniciar a aplicação
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--threads", "8", "wsgi:server"]
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 120 wsgi:server
