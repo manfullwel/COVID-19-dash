@@ -207,23 +207,124 @@ python-dotenv==1.0.0</code></pre>
 
             <div class="step mb-5">
                 <h4><span class="step-number">3</span> Criando o Dashboard</h4>
-                <p>O dashboard é construído em módulos:</p>
-                <ul>
-                    <li>Configuração inicial e imports</li>
-                    <li>Carregamento dos dados</li>
-                    <li>Layout da interface</li>
-                    <li>Callbacks para interatividade</li>
-                </ul>
+                <p>O dashboard é construído em módulos para melhor organização e manutenção do código:</p>
+                
+                <h5 class="mt-4">3.1. Configuração Inicial</h5>
+                <div class="code-block">
+                    <pre><code>import dash
+from dash import html, dcc
+import dash_bootstrap_components as dbc
+import plotly.express as px
+import pandas as pd
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server</code></pre>
+                </div>
+
+                <h5 class="mt-4">3.2. Carregamento dos Dados</h5>
+                <div class="code-block">
+                    <pre><code># Carrega os dados do CSV
+df = pd.read_csv('dados_covid.csv')
+df['data'] = pd.to_datetime(df['data'])
+
+# Prepara os dados para visualização
+df_brasil = df.groupby('data').sum().reset_index()</code></pre>
+                </div>
+
+                <h5 class="mt-4">3.3. Criando os Gráficos</h5>
+                <div class="code-block">
+                    <pre><code># Gráfico de casos por dia
+fig_casos = px.line(df_brasil, 
+    x='data', 
+    y='casosNovos',
+    title='Novos Casos por Dia'
+)
+
+# Gráfico de óbitos por dia
+fig_obitos = px.line(df_brasil,
+    x='data',
+    y='obitosNovos',
+    title='Óbitos por Dia'
+)</code></pre>
+                </div>
+
+                <h5 class="mt-4">3.4. Layout do Dashboard</h5>
+                <p>O layout é construído usando componentes do Dash Bootstrap:</p>
+                <div class="code-block">
+                    <pre><code>app.layout = dbc.Container([
+    dbc.Row([
+        dbc.Col(html.H1("Dashboard COVID-19 Brasil"), 
+                className="text-center my-4")
+    ]),
+    dbc.Row([
+        dbc.Col(dcc.Graph(figure=fig_casos), md=6),
+        dbc.Col(dcc.Graph(figure=fig_obitos), md=6)
+    ])
+], fluid=True)</code></pre>
+                </div>
+
+                <h5 class="mt-4">3.5. Adicionando Interatividade</h5>
+                <p>Os callbacks permitem atualizar os gráficos dinamicamente:</p>
+                <div class="code-block">
+                    <pre><code>@app.callback(
+    Output('grafico-casos', 'figure'),
+    Input('select-estado', 'value')
+)
+def update_graph(estado):
+    df_filtrado = df[df['estado'] == estado]
+    fig = px.line(df_filtrado, x='data', y='casosNovos')
+    return fig</code></pre>
+                </div>
+
+                <h5 class="mt-4">3.6. Estilização</h5>
+                <p>O estilo é definido no arquivo custom.css:</p>
+                <div class="code-block">
+                    <pre><code>/* assets/custom.css */
+.dash-graph {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.container-fluid {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    min-height: 100vh;
+    padding: 20px;
+}</code></pre>
+                </div>
             </div>
 
             <div class="step mb-5">
                 <h4><span class="step-number">4</span> Deploy</h4>
-                <p>O deploy pode ser feito em várias plataformas:</p>
-                <ul>
-                    <li>Railway (recomendado)</li>
-                    <li>Heroku</li>
-                    <li>Render</li>
-                </ul>
+                <p>O deploy no Railway é simplificado usando o arquivo railway.toml:</p>
+                <div class="code-block">
+                    <pre><code># railway.toml
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+startCommand = "python dashboard.py"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+
+[service]
+port = 8080</code></pre>
+                </div>
+                
+                <h5 class="mt-4">Passos para Deploy:</h5>
+                <ol>
+                    <li>Crie uma conta no <a href="https://railway.app" target="_blank">Railway</a></li>
+                    <li>Conecte seu repositório GitHub</li>
+                    <li>Configure as variáveis de ambiente:
+                        <ul>
+                            <li>PORT=8080</li>
+                            <li>PYTHON_VERSION=3.9</li>
+                        </ul>
+                    </li>
+                    <li>O deploy será automático a cada push no repositório</li>
+                </ol>
             </div>
         </div>
     </section>
