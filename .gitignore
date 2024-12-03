@@ -38,17 +38,6 @@ env/
 *.swp
 *.swo
 
-# Arquivos de deploy
-.vercel
-.railway
-.render
-railway.toml
-render.yaml
-Dockerfile
-docker-compose.yml
-gunicorn_config.py
-wsgi.py
-
 # Arquivos de dados grandes
 *.csv
 data/

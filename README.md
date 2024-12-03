@@ -1,12 +1,26 @@
-# Dashboard COVID-19 Brasil
+# Dashboard COVID-19 Brasil (2019-2023)
 
 ![Python](https://img.shields.io/badge/python-3.9-blue.svg)
 ![Dash](https://img.shields.io/badge/dash-2.14.1-green.svg)
 ![Plotly](https://img.shields.io/badge/plotly-5.18.0-red.svg)
 
-Dashboard interativo para visualização de dados da COVID-19 no Brasil, construído com Dash e Plotly.
+## 📋 Sobre o Projeto
 
-![Dashboard Preview](docs/dashboard-preview.png)
+Este dashboard foi desenvolvido em 2019, no início da pandemia de COVID-19, com o objetivo de democratizar o acesso à informação e demonstrar como a programação pode ser uma ferramenta poderosa na análise e visualização de dados em momentos críticos.
+
+### 🎯 Propósito Original
+Em um momento de incertezas e desinformação, este projeto nasceu da necessidade de:
+- Fornecer dados confiáveis e atualizados sobre a COVID-19 no Brasil
+- Demonstrar a importância da coleta e análise de dados
+- Criar visualizações claras e acessíveis para o público geral
+- Utilizar a tecnologia como ferramenta de conscientização
+
+### 💡 Impacto e Aprendizados
+O projeto demonstrou como a programação pode:
+- Transformar dados brutos em informações úteis
+- Auxiliar na tomada de decisões baseada em dados
+- Conectar pessoas através da tecnologia
+- Contribuir para a transparência e acesso à informação
 
 ## 🚀 Features
 
@@ -18,6 +32,16 @@ Dashboard interativo para visualização de dados da COVID-19 no Brasil, constru
 - Filtros por data e região
 - Indicadores em tempo real
 
+## 🌐 Acesso Online
+
+O dashboard está disponível em: [COVID-19 Dashboard](https://covid-19-dash-production.up.railway.app/)
+
+### Ambiente de Produção
+- Deploy contínuo via Railway
+- Monitoramento 24/7
+- Alta disponibilidade
+- Atualizações automáticas
+
 ## 🛠️ Stack Tecnológica
 
 - **Frontend**: 
@@ -28,6 +52,9 @@ Dashboard interativo para visualização de dados da COVID-19 no Brasil, constru
   - Python 3.9
   - Pandas v2.1.3
   - NumPy v1.26.2
+- **Deploy**: 
+  - Docker
+  - Railway
 - **Mapas**: 
   - Mapbox
   - GeoJSON
@@ -72,38 +99,39 @@ python dashboard.py
 
 6. Acesse em: `http://localhost:8080`
 
-## 📊 Dados
+## 📊 Dados e Metodologia
 
-Os dados são atualizados regularmente e incluem:
-- Casos confirmados por estado
-- Óbitos por estado
-- Taxa de mortalidade
-- Evolução temporal
-- Distribuição geográfica
+### Fonte dos Dados
+- Ministério da Saúde do Brasil
+- Secretarias Estaduais de Saúde
+- OpenDataSUS
 
-### Estrutura dos Dados
+### Estrutura
 ```
 dados_covid/
 ├── df_brasil.csv    # Dados agregados do Brasil
 └── df_states.csv    # Dados por estado
 ```
 
-## 🤝 Contribuindo
+### Metodologia
+Os dados são processados seguindo as melhores práticas de análise de dados:
+- Limpeza e validação
+- Normalização
+- Agregação por região
+- Cálculo de indicadores
 
-1. Fork o projeto
-2. Crie sua feature branch (`git checkout -b feature/NovaFuncionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
-5. Abra um Pull Request
+## 🔄 Histórico de Versões
+
+- **v1.0.0** (2019) - Lançamento inicial com dados básicos
+- **v1.1.0** (2020) - Adição de filtros e melhorias na visualização
+- **v1.2.0** (2021) - Interface dark e otimizações
+- **v1.3.0** (2022) - Melhorias de performance
+- **v1.4.0** (2023) - Atualizações finais e documentação
 
 ## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 🔄 Versionamento
+---
 
-- **v1.0.0** - Versão inicial com funcionalidades básicas
-- **v1.1.0** - Adição de filtros por data
-- **v1.2.0** - Melhorias na interface e tema dark
-- **v1.3.0** - Otimizações de performance
-- **v1.4.0** - Correções de bugs e melhorias na visualização de dados
+> **Nota Histórica**: Este dashboard foi uma iniciativa para demonstrar como a tecnologia e a programação podem ser utilizadas para enfrentar desafios globais. Mesmo após o fim da fase mais crítica da pandemia, o projeto permanece como um exemplo da importância da análise de dados e da programação na sociedade moderna.
