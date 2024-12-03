@@ -1,14 +1,26 @@
-FROM python:3.9-slim
+# Use Ubuntu como base
+FROM ubuntu:22.04
 
-WORKDIR /app
+# Evitar prompts durante a instalação
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
 
-# Instalar dependências do sistema
+# Instalar Python e dependências
 RUN apt-get update && apt-get install -y \
+    python3.9 \
+    python3-pip \
+    python3.9-dev \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar arquivos de requisitos primeiro (para melhor cache de camadas)
+# Criar links simbólicos para python3.9
+RUN ln -s /usr/bin/python3.9 /usr/bin/python \
+    && ln -s /usr/bin/pip3 /usr/bin/pip
+
+WORKDIR /app
+
+# Copiar e instalar requirements primeiro
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -19,7 +31,7 @@ COPY . .
 ENV PYTHONUNBUFFERED=1
 ENV DASH_DEBUG_MODE=false
 
-# Expor a porta (apenas documentação)
+# Expor a porta
 EXPOSE 8080
 
 # Comando para iniciar a aplicação
