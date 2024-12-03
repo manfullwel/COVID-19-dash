@@ -128,8 +128,17 @@ app = dash.Dash(__name__,
     external_stylesheets=[
         dbc.themes.CYBORG,
         'https://use.fontawesome.com/releases/v5.15.4/css/all.css'
-    ]
+    ],
+    suppress_callback_exceptions=True,
+    title='COVID-19 Dashboard'
 )
+
+# Adiciona rota de healthcheck
+@app.server.route('/health')
+def health_check():
+    return 'OK', 200
+
+server = app.server
 
 # =====================================================================
 # Configuração do mapa com estilo melhorado
