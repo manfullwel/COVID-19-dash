@@ -3,13 +3,17 @@ import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, ClientsideFunction
 import dash_bootstrap_components as dbc
+import pandas as pd
+import numpy as np
+import json
+import datetime as dt
+
+# Otimizações de memória
+pd.options.mode.chained_assignment = None
+
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
-import numpy as np
-import pandas as pd
-import json
 
 CENTER_LAT, CENTER_LON = -14.272572694355336, -51.25567404158474
 
@@ -394,18 +398,30 @@ app.layout = dbc.Container([
     ], [Input("date-picker", "date"), Input("location-button", "value")]
 )
 def display_status(date, location):
-    # print(location, date)
-    if location == "BRASIL":
-        df_data_on_date = df_brasil[df_brasil["data"] == date]
-    else:
-        df_data_on_date = df_states[(df_states["estado"] == location) & (df_states["data"] == date)]
+    try:
+        if location == "BRASIL":
+            df_data_on_date = df_brasil[df_brasil["data"] == date]
+        else:
+            df_data_on_date = df_states[(df_states["estado"] == location) & (df_states["data"] == date)]
 
-    casos_acumulados = "-" if df_data_on_date["casosAcumulado"].isna().values[0]  else f'{int(df_data_on_date["casosAcumulado"].values[0]):,}'.replace(",", ".") 
-    obitos_acumulado = "-" if df_data_on_date["obitosAcumulado"].isna().values[0]  else f'{int(df_data_on_date["obitosAcumulado"].values[0]):,}'.replace(",", ".") 
-    return (
-            casos_acumulados, 
-            obitos_acumulado, 
-            )
+        if df_data_on_date.empty:
+            return "-", "-"
+
+        casos_acumulados = "-"
+        obitos_acumulado = "-"
+
+        if not df_data_on_date["casosAcumulado"].empty and not df_data_on_date["casosAcumulado"].isna().all():
+            casos = df_data_on_date["casosAcumulado"].iloc[0]
+            casos_acumulados = f'{int(casos):,}'.replace(",", ".") if not pd.isna(casos) else "-"
+
+        if not df_data_on_date["obitosAcumulado"].empty and not df_data_on_date["obitosAcumulado"].isna().all():
+            obitos = df_data_on_date["obitosAcumulado"].iloc[0]
+            obitos_acumulado = f'{int(obitos):,}'.replace(",", ".") if not pd.isna(obitos) else "-"
+
+        return casos_acumulados, obitos_acumulado
+    except Exception as e:
+        print(f"Erro em display_status: {str(e)}")
+        return "-", "-"
 
 
 @app.callback(
