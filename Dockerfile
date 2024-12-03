@@ -12,11 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Configurar variáveis de ambiente
-ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 
-# Expor a porta
-EXPOSE 8080
-
-# Comando para iniciar a aplicação
-CMD ["python", "dashboard.py"]
+# Comando para iniciar a aplicação com a porta do Railway
+CMD python -c "import os; port = int(os.getenv('PORT', '8080')); __import__('dashboard').app.run_server(host='0.0.0.0', port=port, debug=False)"
