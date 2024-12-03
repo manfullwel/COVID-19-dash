@@ -133,7 +133,8 @@ CONTACT_LINK_STYLE = {
 app = dash.Dash(__name__, 
                 external_stylesheets=[
                     dbc.themes.CYBORG,
-                    'https://use.fontawesome.com/releases/v5.15.4/css/all.css'
+                    'https://use.fontawesome.com/releases/v5.15.4/css/all.css',
+                    'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap'
                 ])
 
 # Rota de healthcheck simples
@@ -187,219 +188,138 @@ fig2.update_layout(
 # =====================================================================
 # Layout principal com melhorias
 app.layout = dbc.Container([
+    # Header
     dbc.Row([
-        # Sidebar melhorada
         dbc.Col([
             html.Div([
-                # Logo e Título
-                html.Div([
-                    html.Div([
-                        html.I(className="fas fa-virus", 
-                             style={
-                                 'fontSize': '2.8rem',
-                                 'color': '#8B0000',
-                                 'marginRight': '15px'
-                             }),
-                        html.Div([
-                            html.H1("COVID-19", 
-                                   style={
-                                       'fontSize': '2.5rem',
-                                       'fontWeight': '700',
-                                       'margin': '0',
-                                       'color': '#ffffff'
-                                   }),
-                            html.H2("BRASIL", 
-                                   style={
-                                       'fontSize': '1.8rem',
-                                       'fontWeight': '600',
-                                       'margin': '0',
-                                       'color': '#8B0000'
-                                   })
-                        ])
-                    ], style={'display': 'flex', 'alignItems': 'center', 'marginBottom': '30px'}),
-                ]),
+                html.H1("COVID-19 Dashboard Analytics", className='cyber-text text-center mb-3'),
+                html.P("Análise Avançada de Dados da Pandemia no Brasil", 
+                      className='text-center text-light mb-4 lead')
+            ], className='glass-container p-4 hover-glow')
+        ])
+    ], className='mb-4'),
 
-                # Filtros
-                html.Div([
-                    html.Label("PERÍODO DE ANÁLISE", 
-                             style={
-                                 'fontSize': '0.85rem',
-                                 'fontWeight': '600',
-                                 'color': '#888',
-                                 'letterSpacing': '1.5px',
-                                 'marginBottom': '10px'
-                             }),
-                    dcc.DatePickerRange(
-                        id="date-picker",
-                        min_date_allowed=min_date,
-                        max_date_allowed=max_date,
-                        start_date=max_date - pd.Timedelta(days=30),
-                        end_date=max_date,
-                        display_format='DD/MM/YYYY'
-                    ),
-
-                    html.Label("TIPO DE DADOS", 
-                             style={
-                                 'fontSize': '0.85rem',
-                                 'fontWeight': '600',
-                                 'color': '#888',
-                                 'letterSpacing': '1.5px',
-                                 'marginBottom': '10px'
-                             }),
-                    dcc.Dropdown(
-                        id="location-dropdown",
-                        options=[{"label": j, "value": i}
-                            for i, j in select_columns.items()
-                        ],
-                        value="casosNovos",
-                        className="mb-4"
-                    ),
-
-                    html.Label("REGIÃO", 
-                             style={
-                                 'fontSize': '0.85rem',
-                                 'fontWeight': '600',
-                                 'color': '#888',
-                                 'letterSpacing': '1.5px',
-                                 'marginBottom': '10px'
-                             }),
-                    dcc.Dropdown(
-                        id="location-button",
-                        options=[
-                            {"label": "Brasil", "value": "BRASIL"},
-                            {"label": "Estados", "value": "ESTADOS"}
-                        ],
-                        value="BRASIL",
-                        className="mb-4"
-                    ),
-                ], style={'marginBottom': '40px'}),
-
-                # Cartão de Contato
-                html.Div([
-                    html.Div([
-                        html.I(className="fas fa-user-circle", 
-                              style={
-                                  'fontSize': '3rem',
-                                  'color': '#8B0000',
-                                  'marginBottom': '15px'
-                              }),
-                        html.H3("Igor Soares",
-                               style={
-                                   'fontSize': '1.4rem',
-                                   'fontWeight': '600',
-                                   'color': '#ffffff',
-                                   'marginBottom': '5px'
-                               }),
-                        html.H6("Desenvolvedor",
-                               style={
-                                   'fontSize': '0.9rem',
-                                   'color': '#888',
-                                   'marginBottom': '20px',
-                                   'letterSpacing': '1px'
-                               })
-                    ], style={'textAlign': 'center'}),
-                    
-                    # Links de contato
-                    html.A([
-                        html.I(className="fas fa-envelope", 
-                              style={'marginRight': '10px', 'width': '20px'}),
-                        "igorofyeshua@gmail.com"
-                    ],
-                    href="mailto:igorofyeshua@gmail.com",
-                    style=CONTACT_LINK_STYLE,
-                    className="mb-2"),
-                    
-                    html.A([
-                        html.I(className="fab fa-telegram", 
-                              style={'marginRight': '10px', 'width': '20px'}),
-                        "@igordostrd"
-                    ],
-                    href="https://t.me/igordostrd",
-                    style=CONTACT_LINK_STYLE)
-                ], style=CONTACT_CARD_STYLE)
-            ], style=SIDEBAR_STYLE)
-        ], md=3),
-        
-        # Conteúdo Principal
+    # Info Cards
+    dbc.Row([
         dbc.Col([
-            # Cards Informativos
-            dbc.Row([
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardBody([
-                            html.H6("Casos Totais", className="card-subtitle text-muted"),
-                            html.H3(id="casos-recuperados-text", className="card-title text-success")
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=4),
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardBody([
-                            html.H6("Óbitos", className="card-subtitle text-muted"),
-                            html.H3(id="obitos-text", className="card-title text-danger")
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=4),
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardBody([
-                            html.H6("Casos Ativos", className="card-subtitle text-muted"),
-                            html.H3(id="casos-ativos-text", className="card-title text-warning")
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=4)
-            ], className="mb-4"),
-            
-            # Mapa e Gráfico de Evolução
-            dbc.Row([
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardHeader("Distribuição Geográfica",
-                                     style={'background': '#1a1a1a', 'color': '#fff'}),
-                        dbc.CardBody([
-                            dcc.Loading(
-                                id="loading-1",
-                                type="default",
-                                children=[dcc.Graph(id="choropleth-map", figure=fig, style=GRAPH_STYLE)]
-                            )
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=8),
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardHeader("Evolução Temporal",
-                                     style={'background': '#1a1a1a', 'color': '#fff'}),
-                        dbc.CardBody([
-                            dcc.Graph(id="line-graph", style=GRAPH_STYLE)
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=4)
-            ], className="mb-4"),
-            
-            # Novos Gráficos
-            dbc.Row([
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardHeader("Comparativo de Casos por Estado",
-                                     style={'background': '#1a1a1a', 'color': '#fff'}),
-                        dbc.CardBody([
-                            dcc.Graph(id="bar-chart", style=GRAPH_STYLE)
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=6),
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardHeader("Taxa de Letalidade",
-                                     style={'background': '#1a1a1a', 'color': '#fff'}),
-                        dbc.CardBody([
-                            dcc.Graph(id="mortality-chart", style=GRAPH_STYLE)
-                        ])
-                    ], style=CARD_STYLE)
-                ], md=6)
-            ])
-        ], md=9)
+            dbc.Card([
+                html.Div([
+                    html.I(className="fas fa-chart-line fa-2x mb-3", style={'color': '#00F3FF'}),
+                    html.H3("Análise de Dados", className='cyber-text'),
+                    html.P("Visualização interativa de tendências e padrões", className='text-light')
+                ], className='text-center p-4')
+            ], className='hover-scale mb-4')
+        ], md=4),
+        dbc.Col([
+            dbc.Card([
+                html.Div([
+                    html.I(className="fas fa-map-marked-alt fa-2x mb-3", style={'color': '#FF00E5'}),
+                    html.H3("Mapeamento", className='cyber-text'),
+                    html.P("Distribuição geográfica dos casos", className='text-light')
+                ], className='text-center p-4')
+            ], className='hover-scale mb-4')
+        ], md=4),
+        dbc.Col([
+            dbc.Card([
+                html.Div([
+                    html.I(className="fas fa-brain fa-2x mb-3", style={'color': '#8B40BF'}),
+                    html.H3("Insights", className='cyber-text'),
+                    html.P("Descobertas baseadas em dados", className='text-light')
+                ], className='text-center p-4')
+            ], className='hover-scale mb-4')
+        ], md=4),
+    ]),
+
+    # Controles
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                html.H4("Controles de Visualização", className='cyber-text mb-3'),
+                dbc.Row([
+                    dbc.Col([
+                        html.Label("PERÍODO DE ANÁLISE", className='text-light mb-2'),
+                        dcc.DatePickerRange(
+                            id="date-picker",
+                            min_date_allowed=min_date,
+                            max_date_allowed=max_date,
+                            start_date=max_date - pd.Timedelta(days=30),
+                            end_date=max_date,
+                            display_format='DD/MM/YYYY',
+                            className='neon-border'
+                        ),
+                    ], md=6),
+                    dbc.Col([
+                        html.Label("TIPO DE DADOS", className='text-light mb-2'),
+                        dcc.Dropdown(
+                            id="location-button",
+                            options=[
+                                {"label": "BRASIL", "value": "BRASIL"},
+                                {"label": "ESTADOS", "value": "ESTADOS"},
+                            ],
+                            value="BRASIL",
+                            className='neon-border'
+                        ),
+                    ], md=6),
+                ])
+            ], className='glass-container p-4 mb-4')
+        ])
+    ]),
+
+    # Indicadores
+    dbc.Row([
+        dbc.Col([
+            dbc.Card([
+                html.Div([
+                    html.H5("CASOS RECUPERADOS", className='text-light mb-3'),
+                    html.H3(id="casos-recuperados-text", className='cyber-text pulse')
+                ], className='text-center p-3')
+            ], className='hover-glow mb-4')
+        ], md=6),
+        dbc.Col([
+            dbc.Card([
+                html.Div([
+                    html.H5("ÓBITOS", className='text-light mb-3'),
+                    html.H3(id="obitos-text", className='cyber-text pulse')
+                ], className='text-center p-3')
+            ], className='hover-glow mb-4')
+        ], md=6),
+    ]),
+
+    # Gráficos
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                dcc.Graph(id="choropleth-map", className='neon-border')
+            ], className='glass-container p-4 mb-4')
+        ], md=12),
+    ]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                dcc.Graph(id="bar-chart", className='neon-border')
+            ], className='glass-container p-4 mb-4')
+        ], md=6),
+        dbc.Col([
+            html.Div([
+                dcc.Graph(id="mortality-chart", className='neon-border')
+            ], className='glass-container p-4 mb-4')
+        ], md=6),
+    ]),
+
+    # Footer
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                html.P([
+                    "Desenvolvido com ",
+                    html.I(className="fas fa-heart", style={'color': '#FF00E5'}),
+                    " e Python"
+                ], className='text-center text-light mb-0')
+            ], className='glass-container p-3')
+        ])
     ])
-], fluid=True, style={"padding": "20px", "background-color": "#141414"})
+], fluid=True, className='py-4')
 
 # =====================================================================
 # Interactivity

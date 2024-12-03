@@ -1,0 +1,100 @@
+:root {
+    --purple-hat: #8B40BF;
+    --purple-light: #A66FD3;
+    --purple-dark: #6B2E99;
+    --cyber-blue: #00F3FF;
+    --neon-pink: #FF00E5;
+}
+
+/* Efeitos de Hover e Animações */
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-glow {
+    transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 15px var(--cyber-blue);
+}
+
+.card {
+    background: linear-gradient(145deg, #2A2A2A, #1A1A1A);
+    border: 1px solid var(--purple-hat);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--cyber-blue);
+    transform: translateY(-5px);
+}
+
+/* Efeitos de Texto */
+.cyber-text {
+    background: linear-gradient(45deg, var(--purple-hat), var(--cyber-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(139, 64, 191, 0.3);
+}
+
+.neon-border {
+    border: 2px solid var(--purple-hat);
+    box-shadow: 0 0 10px var(--purple-hat);
+    transition: all 0.3s ease;
+}
+
+.neon-border:hover {
+    border-color: var(--cyber-blue);
+    box-shadow: 0 0 20px var(--cyber-blue);
+}
+
+/* Layout e Containers */
+.glass-container {
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(139, 64, 191, 0.3);
+}
+
+/* Scrollbar Personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1A1A1A;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--purple-hat);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--purple-light);
+}
+
+/* Animações */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+}
