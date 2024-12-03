@@ -1,6 +1,13 @@
 # Dashboard COVID-19 Brasil
 
-Dashboard interativo para visualização de dados da COVID-19 no Brasil, construído com Dash e Plotly.
+[![Deploy on Railway](https://railway.app/button.svg)](https://covid-19-dash-production.up.railway.app/)
+![Python](https://img.shields.io/badge/python-3.9-blue.svg)
+![Dash](https://img.shields.io/badge/dash-latest-green.svg)
+![Docker](https://img.shields.io/badge/docker-latest-blue.svg)
+
+Dashboard interativo para visualização de dados da COVID-19 no Brasil, construído com Dash e Plotly. Acesse o dashboard em produção: [COVID-19 Dashboard](https://covid-19-dash-production.up.railway.app/)
+
+![Dashboard Preview](docs/dashboard-preview.png)
 
 ## 🚀 Features
 
@@ -9,74 +16,79 @@ Dashboard interativo para visualização de dados da COVID-19 no Brasil, constru
 - Gráficos temporais de evolução da pandemia
 - Interface responsiva e moderna
 - Tema dark para melhor visualização
+- Deploy automático via Railway
+- Monitoramento em tempo real
 
-## 🛠️ Tecnologias
+## 🛠️ Stack Tecnológica
 
-- Python 3.9
-- Dash
-- Plotly
-- Pandas
-- Docker
-- Gunicorn
+- **Frontend**: Dash, Plotly
+- **Backend**: Python 3.9, Gunicorn
+- **Dados**: Pandas, NumPy
+- **Deploy**: Docker, Railway
+- **Mapas**: Mapbox
 
-## 📋 Pré-requisitos
+## 🌐 Acesso Online
 
+O dashboard está disponível em: https://covid-19-dash-production.up.railway.app/
+
+Features do ambiente de produção:
+- Deploy automático via GitHub
+- HTTPS/SSL
+- Monitoramento 24/7
+- Auto-scaling
+- Logs em tempo real
+
+## 🔧 Desenvolvimento Local
+
+### Pré-requisitos
 - Python 3.9+
 - Docker Desktop
-- Token do Mapbox (para os mapas)
+- Token do Mapbox
 
-## 🔧 Instalação Local
+### Instalação
 
 1. Clone o repositório:
 ```bash
-git clone [URL_DO_SEU_REPOSITORIO]
-cd [NOME_DO_REPOSITORIO]
+git clone https://github.com/manfullwel/COVID-19-dash.git
+cd COVID-19-dash
 ```
 
-2. Crie um arquivo `.env` baseado no `.env.example`:
+2. Configure as variáveis de ambiente:
 ```bash
 cp .env.example .env
+# Edite o arquivo .env com suas configurações
 ```
 
-3. Configure seu token do Mapbox no arquivo `.env`
-
-4. Execute com Docker:
+3. Execute com Docker:
 ```bash
 docker compose up --build
 ```
 
-5. Acesse em: `http://localhost:10000`
+4. Acesse em: `http://localhost:10000`
 
-## 🌐 Deploy no Render
+## 📊 Dados
 
-1. Crie uma conta no [Render](https://render.com)
-2. Conecte seu repositório GitHub
-3. Crie um novo Web Service
-4. Configure as variáveis de ambiente:
-   - `PORT`: 10000
-   - `MAPBOX_TOKEN`: seu_token_do_mapbox
-   - `PYTHONUNBUFFERED`: 1
-
-## 📦 Estrutura do Projeto
-
-```
-├── app.py              # Aplicação Dash
-├── dashboard.py        # Lógica principal do dashboard
-├── wsgi.py            # Ponto de entrada para Gunicorn
-├── Dockerfile         # Configuração do container
-├── docker-compose.yml # Orquestração do container
-├── requirements.txt   # Dependências Python
-└── .env.example      # Template de variáveis de ambiente
-```
+Os dados são atualizados regularmente e incluem:
+- Casos confirmados por estado
+- Óbitos por estado
+- Taxa de mortalidade
+- Evolução temporal
+- Distribuição geográfica
 
 ## 🤝 Contribuindo
 
 1. Fork o projeto
-2. Crie sua branch de feature (`git checkout -b feature/AmazingFeature`)
+2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
+## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📫 Contato
+
+Seu Nome - [Seu Email]
+
+Link do Projeto: [https://github.com/manfullwel/COVID-19-dash](https://github.com/manfullwel/COVID-19-dash)
