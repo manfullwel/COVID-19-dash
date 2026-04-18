@@ -99,6 +99,42 @@ python dashboard.py
 
 6. Acesse em: `http://localhost:8080`
 
+### Validação rápida (smoke test)
+
+Para validar que o dashboard completo está funcional (layout + callbacks + geração de gráficos principais), execute:
+
+```bash
+python -m unittest tests/test_dashboard_smoke.py
+```
+
+### Validação profissional (HTTP + E2E Playwright)
+
+1. Instale dependências e browser do Playwright:
+```bash
+pip install -r requirements.txt
+python -m playwright install chromium
+```
+
+2. Suba o dashboard em um terminal:
+```bash
+PORT=8051 python dashboard.py
+```
+
+3. Em outro terminal, execute healthcheck HTTP:
+```bash
+python tests/http_health_check.py
+```
+
+4. Execute o E2E completo com interação de filtro e screenshot:
+```bash
+python tests/e2e_playwright_dashboard.py
+```
+
+Screenshot gerada em:
+```text
+artifacts/dashboard-e2e.png
+```
+
 ## 📊 Dados e Metodologia
 
 ### Fonte dos Dados
