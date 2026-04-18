@@ -42,6 +42,10 @@ brazil_states = json.load(open("geojson/brazil_geo.json", "r"))
 brazil_states["features"][0].keys()
 
 df_states_ = df_states[df_states["data"] == "2020-05-13"]
+STATE_OPTIONS = sorted(df_states["estado"].dropna().astype(str).unique().tolist())
+LOCATION_OPTIONS = [{"label": "BRASIL", "value": "BRASIL"}] + [
+    {"label": uf, "value": uf} for uf in STATE_OPTIONS
+]
 select_columns = {"casosAcumulado": "Casos Acumulados", 
                 "casosNovos": "Novos Casos", 
                 "obitosAcumulado": "Óbitos Totais",
@@ -252,10 +256,7 @@ app.layout = dbc.Container([
                         html.Label("TIPO DE DADOS", className='text-light mb-2'),
                         dcc.Dropdown(
                             id="location-button",
-                            options=[
-                                {"label": "BRASIL", "value": "BRASIL"},
-                                {"label": "ESTADOS", "value": "ESTADOS"},
-                            ],
+                            options=LOCATION_OPTIONS,
                             value="BRASIL",
                             className='neon-border'
                         ),
@@ -290,6 +291,26 @@ app.layout = dbc.Container([
         dbc.Col([
             html.Div([
                 dcc.Graph(id="choropleth-map", className='neon-border')
+            ], className='glass-container p-4 mb-4')
+        ], md=12),
+    ]),
+
+    dbc.Row([
+        dbc.Col([
+            html.Div([
+                dcc.Dropdown(
+                    id="location-dropdown",
+                    options=[
+                        {"label": "Casos Acumulados", "value": "casosAcumulado"},
+                        {"label": "Novos Casos", "value": "casosNovos"},
+                        {"label": "Óbitos Acumulados", "value": "obitosAcumulado"},
+                        {"label": "Novos Óbitos", "value": "obitosNovos"},
+                    ],
+                    value="casosAcumulado",
+                    clearable=False,
+                    className='mb-3 neon-border',
+                ),
+                dcc.Graph(id="line-graph", className='neon-border')
             ], className='glass-container p-4 mb-4')
         ], md=12),
     ]),
@@ -361,10 +382,19 @@ def display_status(date, location):
         [Input("location-dropdown", "value"), Input("location-button", "value")]
 )
 def plot_line_graph(plot_type, location):
+    valid_metrics = {"casosAcumulado", "casosNovos", "obitosAcumulado", "obitosNovos"}
+    if plot_type not in valid_metrics:
+        plot_type = "casosAcumulado"
+
     if location == "BRASIL":
-        df_data_on_location = df_brasil.copy()
+        df_data_on_location = df_brasil[["data", *valid_metrics]].copy()
     else:
-        df_data_on_location = df_states[(df_states["estado"] == location)]
+        df_data_on_location = df_states.loc[df_states["estado"] == location, ["data", *valid_metrics]].copy()
+
+    if df_data_on_location.empty:
+        return go.Figure(layout={"template": "plotly_dark"})
+
+    df_data_on_location.sort_values("data", inplace=True)
     fig2 = go.Figure(layout={"template":"plotly_dark"})
     bar_plots = ["casosNovos", "obitosNovos"]
 
@@ -391,7 +421,7 @@ def update_map(date):
 
     fig = px.choropleth_mapbox(df_data_on_states, locations="estado", geojson=brazil_states, 
         center={"lat": CENTER_LAT, "lon": CENTER_LON},  # https://www.google.com/maps/ -> right click -> get lat/lon
-        zoom=4, color="casosAcumulado", color_continuous_scale="Redor", opacity=0.55,
+        zoom=4, color="casosAcumulado", color_continuous_scale="Reds", opacity=0.55,
         hover_data={"casosAcumulado": True, "casosNovos": True, "obitosNovos": True, "estado": False}
         )
 
@@ -402,16 +432,16 @@ def update_map(date):
 
 @app.callback(
     Output("location-button", "value"),
-    [Input("choropleth-map", "clickData"), Input("location-button", "n_clicks")]
+    [Input("choropleth-map", "clickData")]
 )
-def update_location(click_data, n_clicks):
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if click_data is not None and changed_id != "location-button.n_clicks":
-        state = click_data["points"][0]["location"]
-        return "{}".format(state)
-    
-    else:
-        return "BRASIL"
+def update_location(click_data):
+    if click_data is not None:
+        points = click_data.get("points") if isinstance(click_data, dict) else None
+        if points and isinstance(points, list):
+            state = points[0].get("location")
+            if state in STATE_OPTIONS:
+                return f"{state}"
+    return "BRASIL"
 
 
 @app.callback(
@@ -446,8 +476,10 @@ def update_bar_chart(date):
     [Input("date-picker", "end_date")]
 )
 def update_mortality_chart(date):
-    df_date = df_states[df_states["data"] == date]
-    df_date["letalidade"] = (df_date["obitosAcumulado"] / df_date["casosAcumulado"]) * 100
+    df_date = df_states[df_states["data"] == date].copy()
+    denominator = df_date["casosAcumulado"].replace(0, np.nan)
+    df_date["letalidade"] = ((df_date["obitosAcumulado"] / denominator) * 100).replace([np.inf, -np.inf], np.nan)
+    df_date.dropna(subset=["letalidade"], inplace=True)
     
     fig = go.Figure(data=[
         go.Scatter(
