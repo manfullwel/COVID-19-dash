@@ -99,6 +99,14 @@ python dashboard.py
 
 6. Acesse em: `http://localhost:8080`
 
+### Validação rápida (smoke test)
+
+Para validar que o dashboard completo está funcional (layout + callbacks + geração de gráficos principais), execute:
+
+```bash
+python -m unittest tests/test_dashboard_smoke.py
+```
+
 ## 📊 Dados e Metodologia
 
 ### Fonte dos Dados
