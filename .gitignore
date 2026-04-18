@@ -50,3 +50,6 @@ logs/
 # Arquivos do sistema
 .DS_Store
 Thumbs.db
+
+# Pacotes/artefatos gerados manualmente
+COVID-19-dash-ajustado-com-testes.zip
